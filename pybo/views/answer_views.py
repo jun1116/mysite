@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import get_object_or_404, render, redirect ,resolve_url
 from django.utils import timezone
 
 from ..forms import AnswerForm
@@ -17,7 +17,8 @@ def answer_create(request, question_id):
             answer.question = question
             answer.author = request.user
             answer.save()
-            return redirect('pybo:detail', question_id = question_id)
+            return redirect('{}#answer_{}'.format(resolve_url('pybo:detail',question_id=question_id), answer.id))
+            # return redirect('pybo:detail', question_id = question_id) #앵커사용전(스크롤문제)
     else:
         form=AnswerForm()
     context={'question':question,'form':form}
@@ -33,7 +34,7 @@ def answer_create(request, question_id):
 @login_required(login_url='common:login')
 def answer_modify(request, answer_id):
     ## 답변수정
-    answer = get_object_or_404(Answer, pk=answer_id)
+    answer = get_object_or_404(Answer, pk=answer_id) 
     if request.user != answer.author:
         messages.error(request, '수정권한 X')
         return redirect('pybo:detail', question_id = answer.question.id)
@@ -45,7 +46,9 @@ def answer_modify(request, answer_id):
             answer.author = request.user
             answer.modify_date = timezone.now()
             answer.save()
-            return redirect('pybo:detail', question_id=answer.question.id)
+            return redirect('{}#answer_{}'.format(
+                resolve_url('pybo:detail', question_id=answer.question.id), answer.id))
+            # return redirect('pybo:detail', question_id=answer.question.id)
     else:
         form = AnswerForm(instance=answer)
     context = {'answer': answer, 'form': form}
