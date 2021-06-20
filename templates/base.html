@@ -1,0 +1,33 @@
+{%load static %}
+<!DOCTYPE HTML>
+<html lang="ko">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=divice-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" type="text/css" href="{%static 'bootstrap.min.css'%}">
+        <!-- Pybo CSS -->
+        <link rel='stylesheet' type="text/css" href="{% static 'style.css' %}">
+        <title> Hello, Pybo !</title>
+    </head>
+    <body>
+        <!-- 네비게이션바 -->
+        {% include "navbar.html" %}
+        
+        <!-- basic 기본 템플릿 안에 삽입될 내용 -->
+        {% block content %}
+        {%endblock%}
+        <!-- basic end -->
+        <!-- jQuery JS -->
+        <script src="{% static 'jquery-3.6.0.min.js' %}"></script>
+        <!-- Bootstrap JS -->
+        <script src="{% static 'bootstrap.min.js' %}"></script>
+        
+        <!-- js start -->
+        {% block script %}
+        {% endblock %}
+        <!-- js end -->
+        
+    </body>
+</html>
